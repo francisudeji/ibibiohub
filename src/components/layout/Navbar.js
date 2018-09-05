@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => (
-  <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav className="navbar navbar-expand-lg navbar-dark bg-danger mb-5">
     <div className="container">
       <Link className="navbar-brand" to="/">
         Ibibio Translate
@@ -57,10 +57,10 @@ const Navbar = () => (
           role="group"
           aria-label="Authentication"
         >
-          <Link exact to="/auth/login" className="btn btn-secondary">
+          <Link to="/auth/login" className="btn btn-primary">
             Login
           </Link>
-          <Link exact to="/auth/register" className="btn btn-secondary">
+          <Link to="/auth/register" className="btn btn-dark ml-2">
             Register
           </Link>
         </div>
