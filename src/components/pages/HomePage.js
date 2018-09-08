@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Translate from '../Translate/Translate'
+import Forum from '../Forum/Forum'
+
 class Homepage extends Component {
   render() {
     return (
       <div>
-        <Translate />
+        <Forum />
       </div>
     );
   }
