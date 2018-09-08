@@ -5,6 +5,8 @@ import HomePage from "./components/pages/HomePage";
 import TranslatePage from "./components/pages/TranslatePage"
 import { Provider } from "./context/Context";
 
+
+
 class App extends Component {
   state = {
     isLoggedIn: true
@@ -18,7 +20,7 @@ class App extends Component {
             <Navbar />
             <div className="container">
               <Switch>
-                <Route exact path="/forum/general" component={HomePage} />
+                <Route exact path="/" component={HomePage} />
                 <Route exact path="/translate" component={TranslatePage} />
               </Switch>
             </div>

@@ -1,11 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+const styles = {
+  borderRadius: {
+    borderRadius: "1rem"
+  }
+};
+
 const Navbar = () => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-danger mb-2">
     <div className="container">
       <Link className="navbar-brand" to="/">
-        Ibibio Translate
+        <h4>Dakata Language Hub</h4>
       </Link>
       <button
         className="navbar-toggler"
@@ -52,10 +58,18 @@ const Navbar = () => (
           role="group"
           aria-label="Authentication"
         >
-          <Link to="/auth/login" className="btn btn-primary">
+          <Link
+            style={styles.borderRadius}
+            to="/auth/login"
+            className="btn btn-primary"
+          >
             Login
           </Link>
-          <Link to="/auth/register" className="btn btn-warning ml-2">
+          <Link
+            style={styles.borderRadius}
+            to="/auth/register"
+            className="btn btn-outline-light ml-2"
+          >
             Register
           </Link>
         </div>
