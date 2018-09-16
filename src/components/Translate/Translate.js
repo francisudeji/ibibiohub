@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Consumer } from "../../context/Context";
 import axios from "axios";
-import Loader from "react-loader-spinner";
+import Spinner from 'react-spinner-material';
 
 class Translate extends Component {
   state = {
@@ -109,14 +109,15 @@ class Translate extends Component {
           <div className="col-6">
             <h3>Translate</h3>
           </div>
-          <div className="col-6 text-right">
+          <div className="col-6 text-right float-right">
             {isloading === true ? (
-              <Loader
-                type="ThreeDots"
-                color="#dc3545"
-                height="30"
-                width="100"
-              />
+              <div>
+               <Spinner
+                size={50}
+                spinnerColor={"#333"}
+                spinnerWidth={2}
+                visible={true} />
+              </div>
             ) : (
               ""
             )}

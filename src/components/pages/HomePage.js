@@ -11,12 +11,12 @@ class Homepage extends Component {
             <img
               src={showcase}
               alt="Showcase"
-              style={{ maxWidth: "100%" }}
+              style={{ maxWidth: "100%", width: "450px" }}
               className="img-responsive"
             />
           </div>
-          <div className="col-xs-12 col-sm-12 col-md-6">
-            <h1 style={{ fontSize: "2em" }}>Welcome to Dakata Language Hub</h1>
+          <div className="col-xs-12 col-sm-12 col-md-6 mt-5">
+            <h1 style={{ fontSize: "4em" }}>Welcome to Dakata Language Hub</h1>
             <p className="lead">
               This is a platform that collects and providea language data for
               all users, indegenous and non indegenous. Here, there is a
@@ -36,7 +36,7 @@ class Homepage extends Component {
             </Link>
             <p className="text-secondary">
               Already registered?{" "}
-              <Link to="/auth/login" style={{ textDecoration: "underliness" }}>
+              <Link to="/auth/login" style={{ textDecoration: "underline" }}>
                 Log in
               </Link>
             </p>
