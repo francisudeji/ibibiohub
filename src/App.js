@@ -2,16 +2,24 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import HomePage from "./components/pages/HomePage";
-import TranslatePage from "./components/pages/TranslatePage"
+import TranslatePage from "./components/pages/TranslatePage";
+import BlogPage from "./components/pages/BlogPage";
+import Admin from "./components/Admin";
 import { Provider } from "./context/Context";
 
 
-
+//
 class App extends Component {
-  state = {
-    isLoggedIn: true
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoggedIn: true
+    }
   }
 
+  
   render() {
     return (
       <Provider>
@@ -22,6 +30,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/translate" component={TranslatePage} />
+                <Route exact path="/blog/:postTitle" component={BlogPage} />
               </Switch>
             </div>
           </React.Fragment>

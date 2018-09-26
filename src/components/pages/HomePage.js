@@ -1,12 +1,72 @@
 import React, { Component } from "react";
-import Forum from "../Forum/Forum";
+import { Consumer } from "../../context/Context";
 import { Link } from "react-router-dom";
 import showcase from "../../img/showcase.png";
+
+import Spinner from 'react-spinner-material';
+import {config} from "../../config";
+import firebase from "firebase"
+import axios from "axios";
+import Post from "../Post/Post";
+
 class Homepage extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      posts: []
+    }
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
+
+    this.db = firebase.firestore();
+  }
+
+  
+  componentDidMount() {
+    this.db.settings({ timestampsInSnapshots: true });
+
+    axios.get("https://jsonplaceholder.typicode.com/posts")
+      .then(res => {
+        let data = res.data.slice(0, 5)
+        console.log(data);
+
+        // data.forEach(post => {
+        //   this.db.collection("blog").add({
+        //     postAuthor: "Udeji Francis",
+        //     postBody: post.body,
+        //     postCreated: new Date().toDateString(),
+        //     postImageUrl: "",
+        //     postSlug: post.title.split(" ").join("_"),
+        //     postTitle: post.title,
+        //     postUpdated: new Date().toDateString()
+        //   });
+        // });
+
+        this.db.collection('blog').get().then(snapshot => {
+          snapshot.docs.forEach(doc => {
+            const prevPosts = this.state.posts;
+            prevPosts.push(doc.data());
+            this.setState({
+              posts: prevPosts
+            })
+          });
+        });
+
+      })
+      .catch(err => console.log(err))
+    
+  }
+
+
   render() {
     return (
       <div>
         <div className="row pt-5">
+
           <div className="col-xs-12 col-sm-12 col-md-6 pt-5 text-center mb-5">
             <img
               src={showcase}
@@ -15,6 +75,7 @@ class Homepage extends Component {
               className="img-responsive"
             />
           </div>
+
           <div className="col-xs-12 col-sm-12 col-md-6 mt-5">
             <h1 style={{ fontSize: "4em" }}>Welcome to Dakata Language Hub</h1>
             <p className="lead">
@@ -42,6 +103,26 @@ class Homepage extends Component {
             </p>
           </div>
         </div>
+
+        <div className="row pt-5">
+          <div className="col-12 mb-5">
+           <h3 className="text-center mx-auto text-secondary">Read Our Blog</h3>
+          </div>
+          {
+            this.state.posts.length > 0 
+              ? 
+                this.state.posts.map((post, i) => <Post key={i} db={this.db} post={post}/>)
+              : 
+              <div className="text-center mx-auto text-secondary">
+                <Spinner
+                size={50}
+                spinnerColor={"#333"}
+                spinnerWidth={2}
+                visible={true} />
+              </div>
+          }
+        </div>
+
       </div>
     );
   }
