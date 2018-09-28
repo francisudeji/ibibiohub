@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 const Context = React.createContext()
 
 const reducer = (state, action) => {
-  if (action.type === "FETCH_POSTS") {
-    return { ...state, posts: state.posts };
+  if (action.type === "ADD_POSTS") {
+    return { ...state, posts: state.posts.push(action.payload) };
   }
 };
 

@@ -4,6 +4,7 @@ import Navbar from "./components/layout/Navbar";
 import HomePage from "./components/pages/HomePage";
 import TranslatePage from "./components/pages/TranslatePage";
 import BlogPage from "./components/pages/BlogPage";
+import ForumPage from "./components/pages/ForumPage";
 import Admin from "./components/Admin";
 import { Provider } from "./context/Context";
 
@@ -31,6 +32,7 @@ class App extends Component {
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/translate" component={TranslatePage} />
                 <Route exact path="/blog/:postTitle" component={BlogPage} />
+                <Route exact path="/forum" component={ForumPage} />
               </Switch>
             </div>
           </React.Fragment>

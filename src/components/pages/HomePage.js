@@ -32,19 +32,6 @@ class Homepage extends Component {
     axios.get("https://jsonplaceholder.typicode.com/posts")
       .then(res => {
         let data = res.data.slice(0, 5)
-        console.log(data);
-
-        // data.forEach(post => {
-        //   this.db.collection("blog").add({
-        //     postAuthor: "Udeji Francis",
-        //     postBody: post.body,
-        //     postCreated: new Date().toDateString(),
-        //     postImageUrl: "",
-        //     postSlug: post.title.split(" ").join("_"),
-        //     postTitle: post.title,
-        //     postUpdated: new Date().toDateString()
-        //   });
-        // });
 
         this.db.collection('blog').get().then(snapshot => {
           snapshot.docs.forEach(doc => {
@@ -52,7 +39,7 @@ class Homepage extends Component {
             prevPosts.push(doc.data());
             this.setState({
               posts: prevPosts
-            })
+            });  
           });
         });
 
@@ -65,6 +52,19 @@ class Homepage extends Component {
   render() {
     return (
       <div>
+
+
+        <Consumer>
+          {value => {
+            const {dispatch} = value;
+            dispatch({
+              action: "FETCH_POSTS",
+              payload: this.state.posts
+            });
+            console.log(value)
+          }}
+        </Consumer>
+
         <div className="row pt-5">
 
           <div className="col-xs-12 col-sm-12 col-md-6 pt-5 text-center mb-5">

@@ -3,7 +3,7 @@ import {Link} from "react-router-dom"
 
 const Post = props => {
 	const {postTitle, postAuthor, postBody, postSlug, postCreated} = props.post
-	console.log(props.post)
+	//console.log(props.post)
 	return(
 		<div className="col-xs-12 col-sm-3 col-md-3 mb-3">
 			<div className="card">
