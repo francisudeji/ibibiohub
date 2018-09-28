@@ -1,12 +1,45 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
+import firebase from "firebase"
+import {config} from "../../config";
 
 class LoginPage extends Component {
 
 	state = {
 		email: "",
 		password: "",
-		isLoggedIn: false
+		isLoggedIn: false,
+		hasError: false,
+		message: ""
+
+	}
+
+	login = (email, password) => {
+
+		if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
+
+		firebase.auth().signInWithEmailAndPassword(email, password)
+		.then(user => {
+			console.log(user)
+		})
+		.catch(error => {
+		  // Handle Errors here.
+		  let errorCode = error.code;
+		  let errorMessage = error.message;
+		  this.setState({ hasError: true, message: errorMessage })
+		});
+	}
+
+	onLogin = e => {
+		e.preventDefault()
+		const { email, password } = this.state
+		if(email === "" || password === "") {
+			this.setState({ hasError: true, message: "Please fill in all input fields" })
+			return
+		}
+		this.login(email, password)
 	}
 
 	onFormChange = e => {
@@ -16,7 +49,7 @@ class LoginPage extends Component {
 	}
 
 	render() {
-		const { email, password } = this.state
+		const { email, password, message } = this.state
 		return (
 			<div className="bg-light" style={{ height: "50vh" }}>
 			<div className="container">
@@ -27,7 +60,12 @@ class LoginPage extends Component {
 									<h3 className="text-center">Welcome, Login to Continue</h3>
 								</div>
 								<div className="card-body">
-									<form>
+									<form onSubmit={this.onLogin}>
+										{	message 
+											? 
+											<div className="alert alert-danger">{message}</div>
+											: ""
+										}
 									  <div className="form-group">
 									    <label htmlFor="email">Email address</label>
 									    <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange={this.onFormChange} name="email" value={email}/>
