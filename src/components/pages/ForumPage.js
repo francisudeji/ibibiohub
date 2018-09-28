@@ -31,13 +31,14 @@ class ForumPage extends Component {
   	if(this.state.post === "")
   		return
 
-  	addPost({user: "Admin", message: this.state.post})
+  	addPost({username: "Admin", message: this.state.post, timestamp: new Date().toDateString()})
   	this.setState({ posts: returnAllMessages() });
   } 
 
 	render() {
 		return(
 			<div className="forum">
+
 				<div className="row">
 					<div className="col-xs-12 col-sm-6 col-md-6 mx-auto">
 						<div className="card card-body">
@@ -60,11 +61,22 @@ class ForumPage extends Component {
 							{this.state.posts.length !== 0 
 								? this.state.posts.map((post, i) => {
 									return <div key={i} className="col-12">
-											<div className="card">
-												<div className="card-header" style={{ backgroundColor: '#fff' }}>
-													<img src={avatar} height="50" width="50"/>
-													<p className="lead">{post.user}</p>
-												</div>
+											<div className="card my-3">
+												
+													<div className="row">
+														<div className="col-xs-2 col-sm-2 col-md-2 text-center">
+															<img src={avatar} height="50" width="50" className="ml-4 mt-3"/>
+														</div>
+														<div className="col-xs-10 col-sm-10 col-md-10">
+															<div className="card-header py-0" style={{ backgroundColor: '#fff' }}>
+																<p className="lead">{post.username} <small>{post.timestamp}</small></p> 
+															</div>
+															<div className="card-body">
+																{post.message}
+															</div>
+														</div>
+													</div>
+					
 											</div>
 										</div>
 									})
@@ -72,6 +84,7 @@ class ForumPage extends Component {
 						</div>
 					</div>
 				</div>
+				
 			</div>
 		)
 	}

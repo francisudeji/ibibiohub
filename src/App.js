@@ -5,6 +5,8 @@ import HomePage from "./components/pages/HomePage";
 import TranslatePage from "./components/pages/TranslatePage";
 import BlogPage from "./components/pages/BlogPage";
 import ForumPage from "./components/pages/ForumPage";
+import LoginPage from "./components/pages/LoginPage";
+import SignupPage from "./components/pages/SignupPage";
 import Admin from "./components/Admin";
 import { Provider } from "./context/Context";
 
@@ -33,6 +35,8 @@ class App extends Component {
                 <Route exact path="/translate" component={TranslatePage} />
                 <Route exact path="/blog/:postTitle" component={BlogPage} />
                 <Route exact path="/forum" component={ForumPage} />
+                <Route exact path="/auth/login" component={LoginPage} />
+                <Route exact path="/auth/signup" component={SignupPage} />
               </Switch>
             </div>
           </React.Fragment>

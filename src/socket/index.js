@@ -11,7 +11,7 @@ export const init = () => {
 
 export const addPost = userData => {
 	if(socket.emit("post", userData)) {
-		data.push(userData)
+		data.unshift(userData)
 	}
 	returnAllMessages();
 }

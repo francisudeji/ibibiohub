@@ -67,7 +67,7 @@ const Navbar = () => (
           </Link>
           <Link
             style={styles.borderRadius}
-            to="/auth/register"
+            to="/auth/signup"
             className="btn btn-outline-light ml-2"
           >
             Register
