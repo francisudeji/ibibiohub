@@ -5,7 +5,7 @@ import {config} from "../../config";
 
 const styles = {
   borderRadius: {
-    borderRadius: "1rem"
+    borderRadius: "0.25rem"
   }
 };
 
@@ -88,10 +88,23 @@ class Navbar extends Component {
             >
               <Link
                 style={styles.borderRadius}
-                to="/auth/logout"
+                to="/auth/login"
                 className="btn btn-primary"
               >
-                {loggedIn ? `Logout ${email}` : "Login"}
+                {loggedIn 
+                  ? 
+                  <Link
+                    style={styles.borderRadius}
+                    to="/auth/logout"
+                    className="btn btn-primary"
+                  >Logout</Link>
+                  : 
+                  <Link
+                    style={styles.borderRadius}
+                    to="/auth/login"
+                    className="btn btn-primary"
+                  >Login</Link>             
+                }
               </Link>
               {!loggedIn 
                 ?
