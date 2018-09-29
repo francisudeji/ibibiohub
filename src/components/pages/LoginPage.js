@@ -1,27 +1,34 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 import firebase from "firebase"
 import {config} from "../../config";
 
 class LoginPage extends Component {
-
-	state = {
-		email: "",
-		password: "",
-		isLoggedIn: false,
-		hasError: false,
-		message: ""
-
-	}
-
-	login = (email, password) => {
+	constructor() {
+		super()
+		this.state = {
+			email: "",
+			password: "",
+			isLoggedIn: false,
+			hasError: false,
+			message: "",
+			redirect: false
+		}
 
 		if (!firebase.apps.length) {
       firebase.initializeApp(config);
     }
 
+    this.verifyUser()
+
+	}
+
+	login = (email, password) => {
+
+		
 		firebase.auth().signInWithEmailAndPassword(email, password)
 		.then(user => {
+			this.setState({ hasError: false, message: "" })
 			console.log(user)
 		})
 		.catch(error => {
@@ -31,6 +38,13 @@ class LoginPage extends Component {
 		  this.setState({ hasError: true, message: errorMessage })
 		});
 	}
+
+	verifyUser = () => {
+		firebase.auth().onAuthStateChanged(user => {
+		  if (user) 
+		  	this.setState({redirect: true})
+		});
+	} 
 
 	onLogin = e => {
 		e.preventDefault()
@@ -49,12 +63,15 @@ class LoginPage extends Component {
 	}
 
 	render() {
-		const { email, password, message } = this.state
+		const { email, password, message, redirect } = this.state
+		if(redirect) {
+			return ( <Redirect to='/forum'/>)
+		} else {
 		return (
 			<div className="bg-light" style={{ height: "50vh" }}>
 			<div className="container">
 					<div className="row ">
-						<div className="col-xs-12 col-sm-5 col-md-5 mt-5 mx-auto">
+						<div className="col-xs-12 col-sm-5 col-md-5 mt-3 mb-5 mx-auto">
 							<div className="card">
 								<div className="card-header">
 									<h3 className="text-center">Welcome, Login to Continue</h3>
@@ -75,10 +92,18 @@ class LoginPage extends Component {
 									    <label htmlFor="password">Password</label>
 									    <input type="password" className="form-control" id="password" placeholder="Password" onChange={this.onFormChange} name="password" value={password}/>
 									  </div>
-									  <div className="text-right">
-											<Link to="/auth/password-recovery">forgot password ?</Link>
+									  <div>
+									  	<div className="row mb-3">
+									  		<div className="col-6">
+									  			<Link className="text-left"to="/auth/signup">Create Account</Link>
+									  		</div>
+									  		<div className="col-6">
+									  			<Link className="float-right" to="/auth/password-recovery">forgot password ?</Link>
+									  		</div>
+									  	</div>
+									  	
 										</div>
-									  <button type="submit" className="btn btn-primary">Login</button>
+									  <button type="submit" className="btn btn-primary btn-block">Login</button>
 									</form>
 								</div>
 						</div>
@@ -87,6 +112,7 @@ class LoginPage extends Component {
 			</div>
 			</div>
 		);
+		}
 	}
 
 }
