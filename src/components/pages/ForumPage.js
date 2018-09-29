@@ -1,6 +1,9 @@
 import React, { Component } from "react"
 import io from 'socket.io-client';
 import avatar from "../../img/avatar.png"
+import firebase from "firebase"
+import {config} from "../../config";
+import { Redirect } from "react-router-dom"
 
 import {init, addPost, getPost, returnAllMessages} from "../../socket"
 
@@ -12,11 +15,46 @@ class ForumPage extends Component {
 	  this.state = {
 	    response: false,
 	    endpoint: "http://127.0.0.1:4000",
+	    redirect: false,
 	    post: "",
-	    posts: []
+	    posts: [],
+	    displayName: "",
+	    email: "",
+	    emailVerified: "",
+	    photoURL: "",
+	    sAnonymous: "",
+	    uid: "",
+	    providerData: ""
 	  };
 
+
+		if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
+
+    this.verifyUser()
+
 	}
+
+	verifyUser = () => {
+		firebase.auth().onAuthStateChanged(user => {
+		  if (user) {
+		    this.setState({
+		    	displayName: user.displayName,
+			    email: user.email,
+			    emailVerified: user.emailVerified,
+			    photoURL: user.photoURL,
+			    sAnonymous: user.isAnonymous,
+			    uid: user.uid,
+			    providerData: user.providerData
+		    })
+
+		    console.log(user)
+		  } else {
+		    this.setState({ redirect: true })
+		  }
+		});
+	} 
 
   componentDidMount() {
   	console.log(init())
@@ -36,11 +74,15 @@ class ForumPage extends Component {
   } 
 
 	render() {
+		const { redirect } = this.state
+		if(redirect) {
+			return ( <Redirect to='/forum'/>)
+		} else {
 		return(
 			<div className="forum">
 
 				<div className="row">
-					<div className="col-xs-12 col-sm-6 col-md-6 mx-auto">
+					<div className="col-xs-12 col-sm-12 col-md-8 mx-auto">
 						<div className="card card-body">
 							<form className="form" onSubmit={this.post}>
 								<div className="input-group mb-3">
@@ -86,7 +128,8 @@ class ForumPage extends Component {
 				</div>
 				
 			</div>
-		)
+		);
+		}
 	}
 
 }
