@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import firebase from "firebase"
+import firebase from '@firebase/app';
+import '@firebase/firestore'
 import {config} from "../../config";
 
 const styles = {
@@ -86,11 +87,7 @@ class Navbar extends Component {
               role="group"
               aria-label="Authentication"
             >
-              <Link
-                style={styles.borderRadius}
-                to="/auth/login"
-                className="btn btn-primary"
-              >
+
                 {loggedIn 
                   ? 
                   <Link
@@ -105,7 +102,7 @@ class Navbar extends Component {
                     className="btn btn-primary"
                   >Login</Link>             
                 }
-              </Link>
+  
               {!loggedIn 
                 ?
                 <Link

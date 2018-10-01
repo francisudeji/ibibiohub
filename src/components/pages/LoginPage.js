@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Link, Redirect } from "react-router-dom"
-import firebase from "firebase"
+import firebase from '@firebase/app';
+import '@firebase/firestore'
 import {config} from "../../config";
 
 class LoginPage extends Component {
@@ -62,7 +63,7 @@ class LoginPage extends Component {
 		})
 	}
 
-	render() {
+	render() {///
 		const { email, password, message, redirect } = this.state
 		if(redirect) {
 			return ( <Redirect to='/forum'/>)
@@ -71,7 +72,7 @@ class LoginPage extends Component {
 			<div className="bg-light" style={{ height: "50vh" }}>
 			<div className="container">
 					<div className="row ">
-						<div className="col-xs-12 col-sm-5 col-md-5 mt-3 mb-5 mx-auto">
+						<div className="col-xs-12 col-sm-10 col-md-8 mt-3 mb-5 mx-auto">
 							<div className="card">
 								<div className="card-header">
 									<h3 className="text-center">Welcome, Login to Continue</h3>

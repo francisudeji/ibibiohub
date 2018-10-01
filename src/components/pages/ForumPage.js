@@ -1,7 +1,8 @@
 import React, { Component } from "react"
 import io from 'socket.io-client';
 import avatar from "../../img/avatar.png"
-import firebase from "firebase"
+import firebase from '@firebase/app';
+import '@firebase/firestore'
 import {config} from "../../config";
 import { Redirect } from "react-router-dom"
 
