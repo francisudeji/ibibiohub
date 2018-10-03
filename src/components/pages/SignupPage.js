@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Link, Redirect } from "react-router-dom"
-import firebase from '@firebase/app';
+import firebase from 'firebase';
 import '@firebase/firestore'
 
 import {config} from "../../config";

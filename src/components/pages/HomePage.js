@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Consumer } from "../../context/Context";
 import { Link } from "react-router-dom";
 import showcase from "../../img/showcase.png";
 
 import Spinner from 'react-spinner-material';
 import {config} from "../../config";
-import firebase from '@firebase/app';
+import firebase from 'firebase';
 import '@firebase/firestore'
 import axios from "axios";
 import Post from "../Post/Post";
@@ -53,18 +52,6 @@ class Homepage extends Component {
   render() {
     return (
       <div>
-
-
-        <Consumer>
-          {value => {
-            const {dispatch} = value;
-            dispatch({
-              action: "FETCH_POSTS",
-              payload: this.state.posts
-            });
-            console.log(value)
-          }}
-        </Consumer>
 
         <div className="row pt-5">
 

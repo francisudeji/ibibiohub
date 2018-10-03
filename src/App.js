@@ -7,10 +7,10 @@ import BlogPage from "./components/pages/BlogPage";
 import ForumPage from "./components/pages/ForumPage";
 import LoginPage from "./components/pages/LoginPage";
 import SignupPage from "./components/pages/SignupPage";
-import Admin from "./components/Admin";
+import AdminPage from "./components/Admin";
 import { Provider } from "./context/Context";
 
-
+import { AppProvider } from "./index"
 //
 class App extends Component {
 
@@ -25,9 +25,11 @@ class App extends Component {
   
   render() {
     return (
-      <Provider>
+
         <Router>
+
           <React.Fragment>
+
             <Navbar />
             <div className="container">
               <Switch>
@@ -37,11 +39,14 @@ class App extends Component {
                 <Route exact path="/forum" component={ForumPage} />
                 <Route exact path="/auth/login" component={LoginPage} />
                 <Route exact path="/auth/signup" component={SignupPage} />
+                <Route exact path="/auth/admin" component={AdminPage} />
               </Switch>
             </div>
+
           </React.Fragment>
+
         </Router>
-      </Provider>
+
     );
   }
 }
