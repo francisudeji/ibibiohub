@@ -9,6 +9,12 @@ import '@firebase/firestore'
 import axios from "axios";
 import Post from "../Post/Post";
 
+//actions
+import { fetchPosts } from "../../actions/actionCreators"
+
+//REDUX
+import { connect } from "react-redux"
+
 class Homepage extends Component {
 
   constructor(props) {
@@ -28,24 +34,7 @@ class Homepage extends Component {
   
   componentDidMount() {
     this.db.settings({ timestampsInSnapshots: true });
-
-    axios.get("https://jsonplaceholder.typicode.com/posts")
-      .then(res => {
-        let data = res.data.slice(0, 5)
-
-        this.db.collection('blog').get().then(snapshot => {
-          snapshot.docs.forEach(doc => {
-            const prevPosts = this.state.posts;
-            prevPosts.push(doc.data());
-            this.setState({
-              posts: prevPosts
-            });  
-          });
-        });
-
-      })
-      .catch(err => console.log(err))
-    
+    this.props.fetchPosts(this.db)
   }
 
 
@@ -97,9 +86,9 @@ class Homepage extends Component {
            <h3 className="text-center mx-auto text-secondary">Read Our Blog</h3>
           </div>
           {
-            this.state.posts.length > 0 
+            this.props.posts.length !== 0
               ? 
-                this.state.posts.map((post, i) => <Post key={i} db={this.db} post={post}/>)
+                this.props.posts.slice(0, 3).map((post, i) => <Post key={i} post={post[i]}/>)
               : 
               <div className="text-center mx-auto text-secondary">
                 <Spinner
@@ -116,4 +105,10 @@ class Homepage extends Component {
   }
 }
 
-export default Homepage;
+function mapStateToProps(state) {
+  return {
+    posts: state.posts
+  }
+}
+
+export default connect(mapStateToProps, { fetchPosts })(Homepage);

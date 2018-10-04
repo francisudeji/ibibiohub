@@ -11,7 +11,7 @@ import AdminPage from "./components/Admin";
 import { Provider } from "./context/Context";
 
 import { AppProvider } from "./index"
-//
+import "./App.css"
 class App extends Component {
 
   constructor(props) {

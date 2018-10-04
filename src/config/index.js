@@ -1,3 +1,6 @@
+import firebase from 'firebase';
+import '@firebase/firestore'
+
 export const config = {
   apiKey: "AIzaSyCoRkW60EEzXYdpWcIEbKu2yCuiyG1_m-g",
   authDomain: "dakata-language-hub.firebaseapp.com",

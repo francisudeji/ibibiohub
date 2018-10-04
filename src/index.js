@@ -10,7 +10,7 @@ import rootReducer from "./reducers/root"
 import { composeWithDevTools } from "redux-devtools-extension"
 import { Provider } from "react-redux"
 
-const store = createStore(
+export const store = createStore(
 	rootReducer,
 	composeWithDevTools(applyMiddleware(thunk))
 );
@@ -20,5 +20,6 @@ export const AppProvider = () => {
 }
 
 ReactDOM.render(
-	<Provider store={store}><App /></Provider>, document.getElementById('root'));
+	<Provider store={store}><App /></Provider>, 
+	document.getElementById('root'));
 registerServiceWorker();
