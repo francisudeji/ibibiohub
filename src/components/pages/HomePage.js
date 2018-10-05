@@ -88,7 +88,7 @@ class Homepage extends Component {
           {
             this.props.posts.length !== 0
               ? 
-                this.props.posts.slice(0, 3).map((post, i) => <Post key={i} post={post[i]}/>)
+                this.props.posts.map((post, i) => <Post key={i} post={post}/>)
               : 
               <div className="text-center mx-auto text-secondary">
                 <Spinner

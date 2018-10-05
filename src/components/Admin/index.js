@@ -9,6 +9,8 @@ import { fetchPosts } from "../../actions/actionCreators"
 
 import {store} from "../../index"
 
+import { connect } from "react-redux"
+
 
 const config =  {
   placeholderText: 'Edit Your Content Here!',
@@ -23,8 +25,7 @@ class AdminPage extends Component {
 			modalTitle: "Add New Post",
 			postTitle: "",
 			postAuthor: "",
-			postBody: "",
-			posts: []
+			postBody: ""
 		}
 
     if (!firebase.apps.length) {
@@ -34,12 +35,12 @@ class AdminPage extends Component {
     this.db = firebase.firestore();
     this.db.settings({ timestampsInSnapshots: true });
 
-    store.subscribe(() => {
-    	this.setState({
-    		posts: store.getState().posts
-    	}, () => console.log(this.state.posts))
+    // store.subscribe(() => {
+    // 	this.setState({
+    // 		posts: store.getState().posts
+    // 	}, () => console.log(this.state.posts))
 
-    })
+    // })
  
 	}
 
@@ -64,12 +65,11 @@ class AdminPage extends Component {
 		const { postTitle, postAuthor, postBody } = this.state
     this.db.collection('blog-posts').add({
 	    postTitle,
-	    postBody:postBody,
-	    postAuthor: postAuthor,
+	    postBody,
+	    postAuthor,
 	    postCreated: new Date().toDateString(),
 	    postUpdated: new Date().toDateString(),
-	    postSlug: postTitle.split(" ").join("-"),
-	    postImageUrl: ""
+	    postSlug: postTitle.split(" ").join("-").toLowerCase()
     })
     	.then(success =>  console.log(success))
     	.catch(err => console.log(err))
@@ -134,6 +134,11 @@ class AdminPage extends Component {
 	}
 }
 
+function mapStateToProps(state) {
+  return {
+    posts: state.posts
+  }
+}
 
 
-export default AdminPage;
+export default connect(mapStateToProps)(AdminPage);

@@ -18,10 +18,8 @@ export function setPosts(posts) {
 export function fetchPosts(db) {
 	return dispatch => {
 		db.collection('blog-posts').get().then(snapshot => {
-			const data = []
       snapshot.docs.forEach(doc => {
-      	data.push(doc.data())
-        dispatch(setPosts(data))
+        dispatch(setPosts({...doc.data(), id: doc.id}));
       });
     });
 	}

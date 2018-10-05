@@ -15,11 +15,11 @@ export const store = createStore(
 	composeWithDevTools(applyMiddleware(thunk))
 );
 
-export const AppProvider = () => {
-	return <Provider store={store}></Provider>
-}
-
 ReactDOM.render(
-	<Provider store={store}><App /></Provider>, 
-	document.getElementById('root'));
+	<Provider store={store}>
+		<App />
+	</Provider>, 
+	document.getElementById('root')
+);
+
 registerServiceWorker();
