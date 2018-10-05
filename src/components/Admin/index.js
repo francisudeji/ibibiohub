@@ -5,12 +5,11 @@ import firebase from 'firebase';
 import '@firebase/firestore'
 
 //actions
-import { fetchPosts } from "../../actions/actionCreators"
+import { getPosts } from "../../actions/actionCreators"
 
 import {store} from "../../index"
 
 import { connect } from "react-redux"
-
 
 const config =  {
   placeholderText: 'Edit Your Content Here!',
@@ -25,7 +24,8 @@ class AdminPage extends Component {
 			modalTitle: "Add New Post",
 			postTitle: "",
 			postAuthor: "",
-			postBody: ""
+			postBody: "",
+			posts: []
 		}
 
     if (!firebase.apps.length) {
@@ -34,14 +34,15 @@ class AdminPage extends Component {
 
     this.db = firebase.firestore();
     this.db.settings({ timestampsInSnapshots: true });
+	}
 
-    // store.subscribe(() => {
-    // 	this.setState({
-    // 		posts: store.getState().posts
-    // 	}, () => console.log(this.state.posts))
+	componentDidMount() {
+		this.props.getPosts()
+		
+	}
 
-    // })
- 
+	componentWillReceiveProps(nextProps) {
+		console.log(nextProps)
 	}
 
 	handleBodyChange = e => {
@@ -72,10 +73,13 @@ class AdminPage extends Component {
 	    postSlug: postTitle.split(" ").join("-").toLowerCase()
     })
     	.then(success =>  console.log(success))
+
     	.catch(err => console.log(err))
 	}
 
+
 	render() {
+
 		const { postTitle, postAuthor, postBody, modalTitle,  } = this.state
 		return (
 			<div>
@@ -101,9 +105,9 @@ class AdminPage extends Component {
 						  <thead className="thead-dark">
 						    <tr>
 						      <th scope="col">#</th>
-						      <th scope="col">First</th>
-						      <th scope="col">Last</th>
-						      <th scope="col">Handle</th>
+						      <th scope="col">Title</th>
+						      <th scope="col">Author</th>
+						      <th scope="col">Actions</th>
 						    </tr>
 						  </thead>
 						  <tbody>
@@ -141,4 +145,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(AdminPage);
+export default connect(mapStateToProps, { getPosts })(AdminPage);
