@@ -9,7 +9,7 @@ const Post = props => {
 	return (
 	
 		<div className="col-xs-12 col-sm-4 col-md-4 mb-3 d-flex align-items-stretch">
-			<div className="card">
+			<div className="card" style={{ width: "100%" }}>
 				<div className="card-header">
 					<h6 style={{ fontWeight: 400 }}>{postTitle !== undefined ? postTitle : null}</h6> 
 					<span className="text-muted">by <strong>{postAuthor !== undefined ? postAuthor : null}</strong> on {postCreated}</span>

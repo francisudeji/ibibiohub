@@ -37,7 +37,7 @@ const App = {
 
 const Modal = props => {
 
-	const { modalTitle, postTitle, postAuthor, postBody, change, onTitleAndAuthorChange, onBodyChange, onBlogPostSubmit } = props
+	const { modalTitle, postTitle, postAuthor, postBody, change, onTitleAndAuthorChange, onBodyChange, onBlogPostSubmit, message } = props
 
 	return (
 		<div className="modal fade" id="blogModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -51,6 +51,8 @@ const Modal = props => {
 	      </div>
 	      <div className="modal-body">
 	        <form onSubmit={onBlogPostSubmit}>
+	        	
+	        	{message ? <div className={`alert alert-${message.type}`}>{message.text}</div> : ""}
 					  <div className="form-group">
 					    <label htmlFor="post-title">Post Title</label>
 					    <input type="text" className="form-control" id="post-title" placeholder="Enter Post Title" name="postTitle" value={postTitle} onChange={e => onTitleAndAuthorChange(e)}/>   

@@ -32,7 +32,7 @@ export function getPosts() {
 
 export function fetchPosts(db) {
 	return dispatch => {
-		db.collection('blog-posts').get().then(snapshot => {
+		db.collection('blog-posts').orderBy('postCreated').get().then(snapshot => {
       snapshot.docs.forEach(doc => {
         //dispatch(deletePosts(""));
         dispatch(setPosts({...doc.data(), id: doc.id}));

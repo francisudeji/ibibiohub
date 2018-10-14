@@ -5,7 +5,7 @@ import firebase from 'firebase';
 import '@firebase/firestore'
 
 //actions
-import { getPosts } from "../../actions/actionCreators"
+import { getPosts, fetchPosts } from "../../actions/actionCreators"
 
 import {store} from "../../index"
 
@@ -25,7 +25,11 @@ class AdminPage extends Component {
 			postTitle: "",
 			postAuthor: "",
 			postBody: "",
-			posts: []
+			posts: [],
+			message: {
+				type: "",
+				text: ""
+			}
 		}
 
     if (!firebase.apps.length) {
@@ -38,11 +42,25 @@ class AdminPage extends Component {
 
 	componentDidMount() {
 		this.props.getPosts()
-		
+		if(this.props.fetchPosts(this.db)) 
+				this.setState({ posts: this.props.posts })
+		console.log(this.state)
 	}
 
-	componentWillReceiveProps(nextProps) {
-		console.log(nextProps)
+	editPost = e => {
+		const id = e.target.dataset.id
+		this.db.collection('blog-posts').doc(id).get().then(doc => console.log(doc));
+	}
+
+	deletePost = e => {
+		const id = e.target.dataset.id
+		if(window.confirm("Are you sure you want to delete this entry ? \nThis action cannot be undone.")) {
+			if(this.db.collection('blog-posts').doc(id).delete()) {
+				alert(`Successfully deleted post with ID of ${id}`);
+				this.props.fetchPosts(this.db)
+			}
+		}
+		
 	}
 
 	handleBodyChange = e => {
@@ -72,24 +90,38 @@ class AdminPage extends Component {
 	    postUpdated: new Date().toDateString(),
 	    postSlug: postTitle.split(" ").join("-").toLowerCase()
     })
-    	.then(success =>  console.log(success))
+    	.then(success =>  this.setState({
+	    		message: {
+	    			type: "success",
+	    			text: "Successfully added post"
+	    		},
+	    		postTitle: "",
+					postAuthor: "",
+					postBody: ""
+	    	}, this.props.fetchPosts(this.db))
+    	)
 
-    	.catch(err => console.log(err))
+    	.catch(err => this.setState({
+    		message: {
+    			type: "danger",
+    			text: "Failed to add post"
+    		}
+    	}))
 	}
 
 
 	render() {
 
-		const { postTitle, postAuthor, postBody, modalTitle,  } = this.state
+		const { postTitle, postAuthor, postBody, modalTitle, message } = this.state
 		return (
 			<div>
-				{this.state.isModalOpen ? <Modal onBlogPostSubmit={this.handleBlogPostSubmit} onBodyChange={this.handleBodyChange} onTitleAndAuthorChange={this.handleTitleAndAuthorChange} modalTitle={modalTitle} postTitle={postTitle} postAuthor={postAuthor} postBody={postBody} /> : null}
+				{this.state.isModalOpen ? <Modal onBlogPostSubmit={this.handleBlogPostSubmit} onBodyChange={this.handleBodyChange} onTitleAndAuthorChange={this.handleTitleAndAuthorChange} modalTitle={modalTitle} postTitle={postTitle} postAuthor={postAuthor} postBody={postBody} message={message}/> : null}
 				<div className="row my-3">
 
 					<div className="col-6">
-						<h3 className="text-muted">Blog Posts 
-							<span className="badge badge-danger ml-3">34</span>
-						</h3>
+						<h5 className="text-muted">Blog Posts 
+							<span className="badge badge-danger ml-3">{this.props.posts.length}</span>
+						</h5>
 
 					</div>
 
@@ -111,24 +143,20 @@ class AdminPage extends Component {
 						    </tr>
 						  </thead>
 						  <tbody>
-						    <tr>
-						      <th scope="row">1</th>
-						      <td>Mark</td>
-						      <td>Otto</td>
-						      <td>@mdo</td>
-						    </tr>
-						    <tr>
-						      <th scope="row">2</th>
-						      <td>Jacob</td>
-						      <td>Thornton</td>
-						      <td>@fat</td>
-						    </tr>
-						    <tr>
-						      <th scope="row">3</th>
-						      <td>Larry</td>
-						      <td>the Bird</td>
-						      <td>@twitter</td>
-						    </tr>
+						    
+						    { this.props.posts.length > 0 
+						    	? 
+						    		this.props.posts.map((post, i) => <tr key={post.id}>
+											<td scope="row">{i}</td>
+									      <td>{post.postAuthor}</td>
+									      <td>{post.postTitle}</td>
+									      <td className="text-center">
+													<button data-id={post.id} type="button" className="btn btn-default mb-2">edit</button>
+													<button onClick={this.deletePost} data-id={post.id} type="button" className="btn btn-danger ml-1 mb-2">delete</button>
+									      </td>
+						    		</tr>)
+						    	: <tr></tr> 
+						    }
 						  </tbody>
 						</table>
 					</div>
@@ -145,4 +173,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, { getPosts })(AdminPage);
+export default connect(mapStateToProps, { getPosts, fetchPosts })(AdminPage);
